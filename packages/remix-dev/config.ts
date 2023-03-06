@@ -472,8 +472,8 @@ export async function readConfig(
 
   let reactVersion =
     maybeReactVersion.major >= 18 || maybeReactVersion.raw === "0.0.0"
-      ? "18"
-      : "17";
+      ? 18
+      : 17;
 
   let serverRuntime = deps["@remix-run/deno"]
     ? "deno"
@@ -512,7 +512,7 @@ export async function readConfig(
   if (userEntryServerFile) {
     entryServerFile = userEntryServerFile;
   } else {
-    if (!deps["isbot"]) {
+    if (!deps["isbot"] && reactVersion === 18) {
       console.log(
         "adding `isbot` to your package.json, you should commit this change"
       );
