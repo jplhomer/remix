@@ -470,12 +470,10 @@ export async function readConfig(
     );
   }
 
-  let reactVersion =
-    maybeReactVersion.major >= 18
-      ? maybeReactVersion.major
-      : maybeReactVersion.raw === "0.0.0"
-      ? 18
-      : 17;
+  let type =
+    maybeReactVersion.major >= 18 || maybeReactVersion.raw === "0.0.0"
+      ? ("stream" as const)
+      : ("string" as const);
 
   let serverRuntime = deps["@remix-run/deno"]
     ? "deno"
@@ -508,13 +506,13 @@ export async function readConfig(
   if (userEntryClientFile) {
     entryClientFile = userEntryClientFile;
   } else {
-    entryClientFile = `entry.client.${clientRuntime}-${reactVersion}.tsx`;
+    entryClientFile = `entry.client.${clientRuntime}-${type}.tsx`;
   }
 
   if (userEntryServerFile) {
     entryServerFile = userEntryServerFile;
   } else {
-    if (!deps["isbot"] && reactVersion >= 18) {
+    if (!deps["isbot"] && type === "stream") {
       console.log(
         "adding `isbot` to your package.json, you should commit this change"
       );
@@ -536,7 +534,7 @@ export async function readConfig(
       });
     }
 
-    entryServerFile = `${serverRuntime}/entry.server.${clientRuntime}-${reactVersion}.tsx`;
+    entryServerFile = `${serverRuntime}/entry.server.${clientRuntime}-${type}.tsx`;
   }
 
   let entryClientFilePath = userEntryClientFile
