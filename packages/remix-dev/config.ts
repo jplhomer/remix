@@ -374,6 +374,10 @@ export async function readConfig(
     }
   }
 
+  if (!appConfig.future?.v2_errorBoundary) {
+    warnOnce(errorBoundaryWarning, "v2_errorBoundary");
+  }
+
   let serverBuildPath = resolveServerBuildPath(rootDirectory, appConfig);
   let serverBuildTargetEntryModule = `export * from ${JSON.stringify(
     serverBuildVirtualModule.id
@@ -659,3 +663,11 @@ let listFormat = new Intl.ListFormat("en", {
   style: "long",
   type: "conjunction",
 });
+
+export const errorBoundaryWarning =
+  "⚠️ DEPRECATED: The separation of `CatchBoundary` and `ErrorBoundary` has " +
+  "been deprecated and Remix v2 will use a singular `ErrorBoundary` for " +
+  "all thrown values (`Response` and `Error`). Please migrate to the new " +
+  "behavior in Remix v1 via the `future.v2_errorBoundary` flag in your " +
+  "`remix.config.js` file. For more information, see " +
+  "https://remix.run/docs/route/error-boundary-v2";
