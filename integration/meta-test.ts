@@ -399,7 +399,6 @@ test.describe("v2_meta", () => {
       files: {
         "remix.config.js": js`
           module.exports = {
-            ignoredRouteFiles: ["**/.*"],
             future: {
               v2_meta: true,
             },

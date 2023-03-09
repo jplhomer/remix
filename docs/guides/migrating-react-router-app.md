@@ -335,7 +335,6 @@ Every Remix app accepts a `remix.config.js` file in the project root. While its 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   appDirectory: "app",
-  ignoredRouteFiles: ["**/.*"],
   assetsBuildDirectory: "public/build",
 };
 ```

@@ -11,7 +11,6 @@ This file has a few build and development configuration options, but does not ac
 module.exports = {
   appDirectory: "app",
   assetsBuildDirectory: "public/build",
-  ignoredRouteFiles: ["**/.*"],
   publicPath: "/build/",
   routes(defineRoutes) {
     return defineRoutes((route) => {
@@ -164,14 +163,13 @@ a `@sindresorhus/slugify` which is ESM-only as well. Here's how you would be
 able to consume those packages in a CJS app without having to use dynamic
 imports:
 
-```ts filename=remix.config.js lines=[8-13]
+```ts filename=remix.config.js lines=[7-12]
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   appDirectory: "app",
   assetsBuildDirectory: "public/build",
   publicPath: "/build/",
   serverBuildDirectory: "build",
-  ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: [
     /^rehype.*/,
     /^remark.*/,
