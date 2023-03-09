@@ -10,10 +10,19 @@ let fixture: Fixture;
 let appFixture: AppFixture;
 
 test.describe("flat routes", () => {
+  let IGNORED_ROUTE = "/ignore-me-pls";
   test.beforeAll(async () => {
     fixture = await createFixture({
-      future: { v2_routeConvention: true },
       files: {
+        "remix.config.js": js`
+          /** @type {import('@remix-run/dev').AppConfig} */
+          module.exports = {
+            future: {
+              v2_routeConvention: true,
+            },
+            ignoredRouteFiles: ['./ignore-me-pls'],
+          };
+        `,
         "app/root.tsx": js`
           import { Links, Meta, Outlet, Scripts } from "@remix-run/react";
 
@@ -76,6 +85,12 @@ test.describe("flat routes", () => {
         "app/routes/dashboard._index/route.jsx": js`
           export default function () {
             return <h3>Dashboard Index</h3>;
+          }
+        `,
+
+        [`app/routes/${IGNORED_ROUTE}.jsx`]: js`
+          export default function () {
+            return <h2>i should 404</h2>;
           }
         `,
       },
@@ -145,6 +160,12 @@ test.describe("flat routes", () => {
 </div>`);
     });
   }
+
+  test("allows ignoredRouteFiles to be configured", async ({ page }) => {
+    let routeIds = Object.keys(fixture.build.routes);
+
+    expect(routeIds).not.toContain(IGNORED_ROUTE);
+  });
 });
 
 test.describe("emits warnings for route conflicts", async () => {
